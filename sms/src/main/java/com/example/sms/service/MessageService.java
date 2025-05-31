@@ -39,4 +39,16 @@ public class MessageService {
     public void optOut(String phoneNumber) {
         optedOutNumbers.add(phoneNumber);
     }
+
+    public Set<String> getOptedOutNumbers() {
+        return optedOutNumbers;
+    }
+
+    public void clearOptedOutNumbers() {
+        optedOutNumbers.clear();
+    }
+
+    public void clearMessageStore() {
+        messageStore.clear();
+    }
 }

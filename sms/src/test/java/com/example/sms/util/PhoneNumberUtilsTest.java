@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PhoneNumberUtilsTest {
 
     @Test
-    void isValidPhoneNumber_validNumbers_shouldReturnTrue() {
+    void testValidNumbers() {
         assertTrue(PhoneNumberUtils.isValidPhoneNumber("+61123456789"));
         assertTrue(PhoneNumberUtils.isValidPhoneNumber("+64 212345678"));
         assertTrue(PhoneNumberUtils.isValidPhoneNumber("(415) 555-2671"));
@@ -16,7 +16,7 @@ class PhoneNumberUtilsTest {
     }
 
     @Test
-    void isValidPhoneNumber_invalidNumbers_shouldReturnFalse() {
+    void testInvalidNumbers() {
         assertFalse(PhoneNumberUtils.isValidPhoneNumber(""));
         assertFalse(PhoneNumberUtils.isValidPhoneNumber("abcd1234"));
         assertFalse(PhoneNumberUtils.isValidPhoneNumber("12345"));
@@ -24,7 +24,7 @@ class PhoneNumberUtilsTest {
     }
 
     @Test
-    void routeCarrier_forPlus61_shouldAlternateBetweenTelstraAndOptus() {
+    void testAlternateCarriersForAu() {
         String number = "+61123456789";
 
         assertEquals("Optus", PhoneNumberUtils.routeCarrier(number, false));
@@ -32,7 +32,7 @@ class PhoneNumberUtilsTest {
     }
 
     @Test
-    void routeCarrier_forPlus64_shouldReturnSpark() {
+    void testNZPhoneNumbers() {
         String number = "+64211234567";
 
         assertEquals("Spark", PhoneNumberUtils.routeCarrier(number, false));
@@ -40,7 +40,7 @@ class PhoneNumberUtilsTest {
     }
 
     @Test
-    void routeCarrier_forOtherNumbers_shouldReturnGlobal() {
+    void testGlobalPhoneNumbers() {
         String number = "+4915123456789";
 
         assertEquals("Global", PhoneNumberUtils.routeCarrier(number, false));

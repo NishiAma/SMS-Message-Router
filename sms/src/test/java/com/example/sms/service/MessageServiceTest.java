@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Set;
+
 class MessageServiceTest {
 
     private MessageService messageService;
@@ -17,7 +19,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void sendMessage_validNumber_shouldBeDelivered() {
+    void testSendingMessageToValidNumber() {
         Message message = new Message("+61123456789", "Hello", "SMS");
 
         Message result = messageService.sendMessage(message);
@@ -27,7 +29,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void sendMessage_invalidNumber_shouldFail() {
+    void testSendingMessageToInvalidNumber() {
         Message message = new Message("invalid-number", "Hello", "SMS");
 
         Message result = messageService.sendMessage(message);
@@ -37,7 +39,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void sendMessage_optedOutNumber_shouldBeBlocked() {
+    void testSendingMessageToOptedOutNumbers() {
         String optedOutNumber = "+61123456789";
         messageService.optOut(optedOutNumber);
 
@@ -50,7 +52,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void getMessage_shouldReturnStoredMessage() {
+    void testGetMessage() {
         Message message = new Message("+61123456789", "Hello", "SMS");
         messageService.sendMessage(message);
 
@@ -62,7 +64,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void routeCarrier_shouldAlternateForPlus61Numbers() {
+    void testRoutCarrierAlternativeForAu() {
         Message message1 = new Message("+61123456789", "Hello 1", "SMS");
         Message message2 = new Message("+61123456789", "Hello 2", "SMS");
 
@@ -74,7 +76,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void sendMessage_plus64Number_shouldUseSparkCarrier() {
+    void testRoutCarrierForNz() {
         Message message = new Message("+64211234567", "Hello NZ", "SMS");
 
         Message result = messageService.sendMessage(message);
@@ -84,12 +86,48 @@ class MessageServiceTest {
     }
 
     @Test
-    void sendMessage_otherNumber_shouldUseGlobalCarrier() {
+    void testCarrierForGlobal() {
         Message message = new Message("+94772340562", "Hello SL", "SMS");
 
         Message result = messageService.sendMessage(message);
 
         assertEquals("Global", result.getCarrier());
         assertEquals(MessageStatus.DELIVERED, result.getStatus());
+    }
+
+    @Test
+    void testOptOutNumber() {
+        String optedOutNumber = "+61123456780";
+        messageService.optOut(optedOutNumber);
+        Set<String> optedOutNumbers = messageService.getOptedOutNumbers();
+        assertNotNull(optedOutNumbers);
+        assertTrue(optedOutNumbers.contains(optedOutNumber));
+    }
+
+    @Test
+    void testClearOptOutNumber() {
+        String optedOutNumber = "+61123456780";
+        messageService.optOut(optedOutNumber);
+        messageService.clearOptedOutNumbers();
+        Set<String> optedOutNumbers = messageService.getOptedOutNumbers();
+        assertEquals(0, optedOutNumbers.size());
+
+    }
+
+    @Test
+    void testClearMessageStore() {
+        Message message1 = new Message("+94772340562", "Hello SL", "SMS");
+        Message message2 = new Message("+64211234567", "Hello NZ", "SMS");
+        messageService.sendMessage(message1);
+        messageService.sendMessage(message2);
+
+        Message sentMessage1 = messageService.getMessage(message1.getId());
+        Message sentMessage2 = messageService.getMessage(message2.getId());
+        assertNotNull(sentMessage1);
+        assertNotNull(sentMessage2);
+        messageService.clearMessageStore();
+        assertNull(messageService.getMessage(message1.getId()));
+        assertNull(messageService.getMessage(message2.getId()));
+
     }
 }

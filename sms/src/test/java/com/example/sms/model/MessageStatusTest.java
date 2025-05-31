@@ -11,6 +11,7 @@ public class MessageStatusTest {
         assertEquals("SENT", MessageStatus.SENT.name());
         assertEquals("DELIVERED", MessageStatus.DELIVERED.name());
         assertEquals("BLOCKED", MessageStatus.BLOCKED.name());
+        assertEquals("FAILED", MessageStatus.FAILED.name());
     }
 
     @Test
@@ -19,5 +20,6 @@ public class MessageStatusTest {
         assertEquals(1, MessageStatus.SENT.ordinal());
         assertEquals(2, MessageStatus.DELIVERED.ordinal());
         assertEquals(3, MessageStatus.BLOCKED.ordinal());
+        assertEquals(4, MessageStatus.FAILED.ordinal());
     }
 }

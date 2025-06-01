@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/messages")
+@RequestMapping
 public class MessageController {
 
     private final MessageService messageService;
@@ -18,13 +18,13 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @PostMapping
+    @PostMapping("/messages")
     public ResponseEntity<?> sendMessage(@RequestBody Message message) {
         Message savedMessage = messageService.sendMessage(message);
         return ResponseEntity.ok(Map.of("id", savedMessage.getId(), "status", savedMessage.getStatus()));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/messages/{id}")
     public ResponseEntity<?> getMessageStatus(@PathVariable String id) {
         Message message = messageService.getMessage(id);
         if (message == null) {

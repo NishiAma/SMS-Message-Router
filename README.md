@@ -36,6 +36,6 @@ The opted-out phone numbers are being stored in a `Set` derived from a `Concurre
 
 ## ℹ️ More Information
 
-The architecture diagram can be found in [ArchitectureDiagram.md](sms\src\docs\ArchitectureDiagram.md)
+The architecture diagram can be found in [ArchitectureDiagram.md](sms/src/docs/ArchitectureDiagram.md)
 
-Information about API endpoints can be found in [APIEndpoints.md](sms\src\docs\APIEndpoints.md)
+Information about API endpoints can be found in [APIEndpoints.md](sms/src/docs/APIEndpoints.md)
